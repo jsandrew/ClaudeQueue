@@ -126,15 +126,8 @@ class ClaudeQueue:
         if not queue_content:
             return
         
-        # Process queue content into numbered tasks
-        tasks = []
-        for line_num, line in enumerate(queue_content.strip().split('\n'), 1):
-            line = line.strip()
-            if line:
-                tasks.append(f"{line_num}. {line}")
-        
         # Create simple message
-        initial_message = f"Process these tasks one by one: {'; '.join(tasks)}"
+        initial_message = "Check the queue.md file for work items and process them. Remove items from the queue when they are complete, or add new ones as issues are discovered when building and validating."
         if not self.send_to_claude(initial_message):
             self.log("Failed to send initial queue to Claude")
             return
@@ -148,35 +141,14 @@ class ClaudeQueue:
                 self.log("Waiting 15 minutes before next check...")
                 time.sleep(900)  # 15 minutes = 900 seconds
                 
-                # Check if Claude has items left in queue
-                self.log("Checking if Claude has remaining tasks...")
-                if not self.send_to_claude("Do you have any remaining tasks in your queue? Please respond with only 'yes' or 'no'."):
-                    self.log("Failed to send status check to Claude")
+                # Send queue check message
+                queue_message = "Check the queue.md file for work items and continue processing them. Remove items from the queue when they are complete, or add new ones as issues are discovered when building and validating."
+                self.log("Sending queue check message to Claude...")
+                if not self.send_to_claude(queue_message):
+                    self.log("Failed to send queue check message to Claude")
                     continue
                 
-                # Wait a moment for Claude to respond, then ask user
-                time.sleep(5)
-                
-                # Get user input about Claude's response
-                claude_response = input("\\nWhat did Claude respond? (yes/no/q to quit): ").strip().lower()
-                
-                if claude_response == 'q':
-                    self.log("Exiting Claude Queue")
-                    break
-                elif claude_response == 'no':
-                    self.log("Claude reports no remaining tasks. Shutting down.")
-                    break
-                elif claude_response == 'yes':
-                    self.log("Claude has remaining tasks. Sending continue command...")
-                    if not self.send_to_claude("continue"):
-                        self.log("Failed to send continue command")
-                        break
-                    self.log("Sent 'continue' command to Claude")
-                else:
-                    self.log("Invalid response. Assuming tasks remain and continuing...")
-                    if not self.send_to_claude("continue"):
-                        self.log("Failed to send continue command")
-                        break
+                self.log("Queue check message sent to Claude")
                 
             except KeyboardInterrupt:
                 self.log("Interrupted by user")
