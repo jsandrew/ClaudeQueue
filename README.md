@@ -48,6 +48,11 @@ chmod +x claude_queue.py
    - Check the queue every 15 minutes
    - Continue processing until interrupted
 
+**Important Notes:**
+- The Claude Code terminal window does NOT need to remain in focus after the initial setup
+- To stop the script, press `Ctrl+C` in the terminal running claude_queue.py
+- The script will log all activities to `claude_queue.log`
+
 ## How It Works
 
 1. **Queue Management**: Tasks are stored in a `queue.md` markdown file that Claude can read and update

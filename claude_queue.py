@@ -12,6 +12,8 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 class ClaudeQueue:
+    QUEUE_MESSAGE = "Check the queue.md file for work items and process them. Remove items from the queue when they are complete, or add new ones as issues are discovered when building and validating."
+    
     def __init__(self, repo_path=None):
         if repo_path:
             self.repo_path = Path(repo_path)
@@ -126,9 +128,8 @@ class ClaudeQueue:
         if not queue_content:
             return
         
-        # Create simple message
-        initial_message = "Check the queue.md file for work items and process them. Remove items from the queue when they are complete, or add new ones as issues are discovered when building and validating."
-        if not self.send_to_claude(initial_message):
+        # Send initial queue message
+        if not self.send_to_claude(self.QUEUE_MESSAGE):
             self.log("Failed to send initial queue to Claude")
             return
         
@@ -142,9 +143,8 @@ class ClaudeQueue:
                 time.sleep(900)  # 15 minutes = 900 seconds
                 
                 # Send queue check message
-                queue_message = "Check the queue.md file for work items and continue processing them. Remove items from the queue when they are complete, or add new ones as issues are discovered when building and validating."
                 self.log("Sending queue check message to Claude...")
-                if not self.send_to_claude(queue_message):
+                if not self.send_to_claude(self.QUEUE_MESSAGE):
                     self.log("Failed to send queue check message to Claude")
                     continue
                 
