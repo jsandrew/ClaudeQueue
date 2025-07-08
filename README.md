@@ -14,7 +14,7 @@ Automatically feed tasks to Claude Code and handle quota limits. This tool helps
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/ClaudeQueue.git
+git clone https://github.com/jsandrew/ClaudeQueue.git
 cd ClaudeQueue
 ```
 
