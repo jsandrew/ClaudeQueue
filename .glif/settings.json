@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "branches": {
+    "working": "working",
+    "release": "main"
+  },
+  "sync": {
+    "enabled": false,
+    "auto_push_commits": false,
+    "auto_push_checkpoints": true,
+    "auto_push_releases": true,
+    "github_repo": null,
+    "save_debounce_ms": 2000
+  },
+  "ai": {
+    "commit_messages_enabled": true,
+    "release_notes_enabled": true,
+    "provider": "Claude"
+  },
+  "files": {
+    "ignore_patterns": [
+      ".git",
+      "node_modules",
+      ".DS_Store",
+      "target",
+      "*.log",
+      "*.tmp",
+      ".env",
+      ".env.local",
+      "dist",
+      "build"
+    ],
+    "size_limit_mb": 100
+  }
+}
